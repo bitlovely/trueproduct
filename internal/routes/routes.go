@@ -6,6 +6,11 @@ import (
 )
 
 func SetupRoutes(r *gin.Engine) {
+    // Home page
+    r.GET("/", func(c *gin.Context) {
+        c.HTML(200, "index.html", nil)
+    })
+
     r.GET("/health", func(c *gin.Context) {
         c.JSON(200, gin.H{"status": "ok"})
     })
