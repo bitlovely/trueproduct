@@ -5,6 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TrueProduct - Anti-Counterfeit Product Verification</title>
     <style>
+        :root {
+            --bg-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --bg-container: white;
+            --text-primary: #333;
+            --text-secondary: #666;
+            --text-tertiary: #555;
+            --accent-color: #667eea;
+            --feature-bg: #f8f9fa;
+            --feature-border: #e9ecef;
+            --endpoint-bg: white;
+            --code-bg: #f1f3f5;
+            --code-color: #e83e8c;
+            --shadow: rgba(0, 0, 0, 0.3);
+            --shadow-hover: rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            --bg-container: #1e1e2e;
+            --text-primary: #e4e4e7;
+            --text-secondary: #a1a1aa;
+            --text-tertiary: #d4d4d8;
+            --accent-color: #818cf8;
+            --feature-bg: #27272a;
+            --feature-border: #3f3f46;
+            --endpoint-bg: #18181b;
+            --code-bg: #27272a;
+            --code-color: #f472b6;
+            --shadow: rgba(0, 0, 0, 0.5);
+            --shadow-hover: rgba(0, 0, 0, 0.3);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -14,43 +46,72 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--text-primary);
+            background: var(--bg-primary);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+        
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--bg-container);
+            border: 2px solid var(--feature-border);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            box-shadow: 0 4px 12px var(--shadow);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px var(--shadow-hover);
         }
         
         .container {
-            background: white;
+            background: var(--bg-container);
             border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 20px 60px var(--shadow);
             max-width: 800px;
             width: 100%;
             padding: 60px 40px;
             text-align: center;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
         }
         
         h1 {
-            color: #667eea;
+            color: var(--accent-color);
             font-size: 3em;
             margin-bottom: 20px;
             font-weight: 700;
+            transition: color 0.3s ease;
         }
         
         .subtitle {
-            color: #666;
+            color: var(--text-secondary);
             font-size: 1.3em;
             margin-bottom: 40px;
+            transition: color 0.3s ease;
         }
         
         .description {
-            color: #555;
+            color: var(--text-tertiary);
             font-size: 1.1em;
             margin-bottom: 40px;
             line-height: 1.8;
+            transition: color 0.3s ease;
         }
         
         .features {
@@ -61,16 +122,16 @@
         }
         
         .feature {
-            background: #f8f9fa;
+            background: var(--feature-bg);
             padding: 25px;
             border-radius: 10px;
-            border: 2px solid #e9ecef;
-            transition: transform 0.3s, box-shadow 0.3s;
+            border: 2px solid var(--feature-border);
+            transition: transform 0.3s, box-shadow 0.3s, background 0.3s ease, border-color 0.3s ease;
         }
         
         .feature:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 25px var(--shadow-hover);
         }
         
         .feature-icon {
@@ -79,44 +140,50 @@
         }
         
         .feature h3 {
-            color: #667eea;
+            color: var(--accent-color);
             margin-bottom: 10px;
             font-size: 1.2em;
+            transition: color 0.3s ease;
         }
         
         .feature p {
-            color: #666;
+            color: var(--text-secondary);
             font-size: 0.95em;
+            transition: color 0.3s ease;
         }
         
         .api-info {
-            background: #f8f9fa;
+            background: var(--feature-bg);
             padding: 30px;
             border-radius: 10px;
             margin-top: 40px;
             text-align: left;
+            transition: background 0.3s ease;
         }
         
         .api-info h2 {
-            color: #667eea;
+            color: var(--accent-color);
             margin-bottom: 20px;
             text-align: center;
+            transition: color 0.3s ease;
         }
         
         .endpoint {
-            background: white;
+            background: var(--endpoint-bg);
             padding: 15px;
             border-radius: 8px;
             margin: 10px 0;
-            border-left: 4px solid #667eea;
+            border-left: 4px solid var(--accent-color);
+            transition: background 0.3s ease, border-color 0.3s ease;
         }
         
         .endpoint code {
-            background: #f1f3f5;
+            background: var(--code-bg);
             padding: 3px 8px;
             border-radius: 4px;
             font-family: 'Courier New', monospace;
-            color: #e83e8c;
+            color: var(--code-color);
+            transition: background 0.3s ease, color 0.3s ease;
         }
         
         .status {
@@ -131,6 +198,7 @@
     </style>
 </head>
 <body>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">🌙</button>
     <div class="container">
         <h1>📦 TrueProduct</h1>
         <p class="subtitle">Anti-Counterfeit Product Verification System</p>
@@ -172,6 +240,47 @@
         
         <div class="status">✓ Service is running</div>
     </div>
+
+    <script>
+        // Get theme toggle button
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+
+        // Check for saved theme preference or default to light mode
+        const currentTheme = localStorage.getItem('theme') || 
+            (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        
+        // Apply theme
+        html.setAttribute('data-theme', currentTheme);
+        updateToggleIcon(currentTheme);
+
+        // Theme toggle function
+        function toggleTheme() {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateToggleIcon(newTheme);
+        }
+
+        // Update toggle icon based on theme
+        function updateToggleIcon(theme) {
+            themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+        }
+
+        // Add click event listener
+        themeToggle.addEventListener('click', toggleTheme);
+
+        // Listen for system theme changes
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+            if (!localStorage.getItem('theme')) {
+                const newTheme = e.matches ? 'dark' : 'light';
+                html.setAttribute('data-theme', newTheme);
+                updateToggleIcon(newTheme);
+            }
+        });
+    </script>
 </body>
 </html>
 
